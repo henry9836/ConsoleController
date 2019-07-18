@@ -20,6 +20,8 @@ Verison 4.0
 #include <stdlib.h>  
 #include <time.h>  
 #include <stdio.h>
+#include <io.h>
+#include <fcntl.h>
 
 using namespace std;
 
@@ -105,9 +107,9 @@ void Console_FontSize(int x, int y) {
 	SetCurrentConsoleFontEx(out, 0, lpConsoleCurrentFontEx);
 }
 
-void Console_ColoredTEXT(string m_word, int m_color) {
+void Console_ColoredTEXT(wstring m_word, int m_color) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), m_color);
-	cout << m_word;
+	wcout << m_word;
 }
 
 void Console_ColoredTEXTChar(char m_word, int m_color) {
@@ -115,7 +117,7 @@ void Console_ColoredTEXTChar(char m_word, int m_color) {
 	cout << m_word;
 }
 
-void Console_RainbowWrite(string m_word) {
+void Console_RainbowWrite(wstring m_word) {
 	srand((unsigned int)time(NULL));
 
 	for (size_t i = 0; i < m_word.length(); i++)
@@ -124,29 +126,29 @@ void Console_RainbowWrite(string m_word) {
 	}
 }
 
-void Console_OutputLog(std::string log, int type) {
-	Console_ColoredTEXT("[", DEFAULT);
+void Console_OutputLog(std::wstring log, int type) {
+	Console_ColoredTEXT(L"[", DEFAULT);
 	switch (type)
 	{
 	case LOGINFO: {
-		Console_ColoredTEXT("INFO", LOGINFO);
+		Console_ColoredTEXT(L"INFO", LOGINFO);
 		break;
 	}
 	case LOGWARN: {
-		Console_ColoredTEXT("WARN", LOGWARN);
+		Console_ColoredTEXT(L"WARN", LOGWARN);
 		break;
 	}
 	case LOGFATAL: {
-		Console_ColoredTEXT("FATAL", LOGFATAL);
+		Console_ColoredTEXT(L"FATAL", LOGFATAL);
 		break;
 	}
 	default: {
-		Console_ColoredTEXT("UNKN", DEFAULT);
+		Console_ColoredTEXT(L"UNKN", DEFAULT);
 		break;
 	}
 	}
-	Console_ColoredTEXT("] ", DEFAULT);
-	log = log + "\n";
+	Console_ColoredTEXT(L"] ", DEFAULT);
+	log = log + L"\n";
 	if (fullLogColor) {
 		Console_ColoredTEXT(log, type);
 	}
@@ -155,18 +157,18 @@ void Console_OutputLog(std::string log, int type) {
 	}
 }
 
-void Console_Banner() {
-
+void Banner() {
+	_setmode(_fileno(stdout), _O_U16TEXT);
 	srand((unsigned int)time(NULL));
 	int color = rand() % 15 + 1;
-	Console_ColoredTEXT("===============================================================\n", color);
-	Console_ColoredTEXT("    _______                      __        ________       __ \n", color);
-	Console_ColoredTEXT("   / ____ /___ ____  _________  / /__     / ____/ /______/ / \n", color);
-	Console_ColoredTEXT("  / /   / __ \\/ __ \\/ ___/ __ \\/ / _ \\   / /   / __/ ___/ / \n", color);
-	Console_ColoredTEXT(" / /___/ /_/ / / / (__  ) /_/ / /  __/  / /___/ /_/ /  / /  \n", color);
-	Console_ColoredTEXT(" \\____/\\____/_/ /_/____/\\____/_/\\___/   \\____/\\__/_/  /_/   \n", color);
-	Console_ColoredTEXT(" ~ Henry Oliver                                    v 4.0\n", color); \
-		Console_ColoredTEXT("===============================================================\n", color);
-	Console_ColoredTEXT("\n", 15);
+	Console_ColoredTEXT(L"===============================================================\n", color);
+	Console_ColoredTEXT(L"    _______                      __        ________       __ \n", color);
+	Console_ColoredTEXT(L"   / ____ /___ ____  _________  / /__     / ____/ /______/ / \n", color);
+	Console_ColoredTEXT(L"  / /   / __ \\/ __ \\/ ___/ __ \\/ / _ \\   / /   / __/ ___/ / \n", color);
+	Console_ColoredTEXT(L" / /___/ /_/ / / / (__  ) /_/ / /  __/  / /___/ /_/ /  / /  \n", color);
+	Console_ColoredTEXT(L" \\____/\\____/_/ /_/____/\\____/_/\\___/   \\____/\\__/_/  /_/   \n", color);
+	Console_ColoredTEXT(L" ~ Henry Oliver                                    v 4.0\n", color); \
+	Console_ColoredTEXT(L"===============================================================\n", color);
+	Console_ColoredTEXT(L"\n", 15);
 
 }
