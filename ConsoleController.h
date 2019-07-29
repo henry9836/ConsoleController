@@ -7,7 +7,7 @@
 
 Henry Oliver
 
-Verison 4.0
+Verison 4.1
 
 */
 
@@ -22,8 +22,9 @@ Verison 4.0
 #include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
-
-using namespace std;
+#include <locale>
+#include <codecvt>
+#include <string>
 
 /*
 
@@ -75,29 +76,29 @@ enum LOGCOLOR
 	LOGFATAL = 12,
 };
 
-bool fullLogColor = false;
+inline bool fullLogColor = false;
 
-void Console_gotoXY(int x, int y) {
+inline void Console_gotoXY(int x, int y) {
 	COORD coord;
 	coord.X = x;
 	coord.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void Console_Resize(int x, int y) { //Resize Console Window
+inline void Console_Resize(int x, int y) { //Resize Console Window
 	RECT m_rect;
 	HWND m_console = GetConsoleWindow();
 	GetWindowRect(m_console, &m_rect); //stores the console's current dimensions
 	MoveWindow(m_console, m_rect.left, m_rect.top, x, y, TRUE);
 }
 
-void Console_Clear() { //Clear console window
+inline void Console_Clear() { //Clear console window
 	system("cls");
 	Console_gotoXY(0, 0);
 }
 
 
-void Console_FontSize(int x, int y) {
+inline void Console_FontSize(int x, int y) {
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
 	PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx = new CONSOLE_FONT_INFOEX();
 	lpConsoleCurrentFontEx->cbSize = sizeof(CONSOLE_FONT_INFOEX);
@@ -107,26 +108,17 @@ void Console_FontSize(int x, int y) {
 	SetCurrentConsoleFontEx(out, 0, lpConsoleCurrentFontEx);
 }
 
-void Console_ColoredTEXT(wstring m_word, int m_color) {
+inline void Console_ColoredTEXT(wstring m_word, int m_color) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), m_color);
 	wcout << m_word;
 }
 
-void Console_ColoredTEXTChar(char m_word, int m_color) {
+inline void Console_ColoredTEXTChar(char m_word, int m_color) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), m_color);
 	cout << m_word;
 }
 
-void Console_RainbowWrite(wstring m_word) {
-	srand((unsigned int)time(NULL));
-
-	for (size_t i = 0; i < m_word.length(); i++)
-	{
-		Console_ColoredTEXTChar(m_word[i], rand() % 15 + 1);
-	}
-}
-
-void Console_OutputLog(std::wstring log, int type) {
+inline void Console_OutputLog(std::wstring log, int type) {
 	Console_ColoredTEXT(L"[", DEFAULT);
 	switch (type)
 	{
@@ -157,7 +149,7 @@ void Console_OutputLog(std::wstring log, int type) {
 	}
 }
 
-void Banner() {
+inline void Banner() {
 	_setmode(_fileno(stdout), _O_U16TEXT);
 	srand((unsigned int)time(NULL));
 	int color = rand() % 15 + 1;
@@ -167,8 +159,16 @@ void Banner() {
 	Console_ColoredTEXT(L"  / /   / __ \\/ __ \\/ ___/ __ \\/ / _ \\   / /   / __/ ___/ / \n", color);
 	Console_ColoredTEXT(L" / /___/ /_/ / / / (__  ) /_/ / /  __/  / /___/ /_/ /  / /  \n", color);
 	Console_ColoredTEXT(L" \\____/\\____/_/ /_/____/\\____/_/\\___/   \\____/\\__/_/  /_/   \n", color);
-	Console_ColoredTEXT(L" ~ Henry Oliver                                    v 4.0\n", color); \
+	Console_ColoredTEXT(L" ~ Henry Oliver                                    v 4.1\n", color); \
 	Console_ColoredTEXT(L"===============================================================\n", color);
 	Console_ColoredTEXT(L"\n", 15);
 
+}
+
+inline wstring to_wstring(string str)
+{
+	int wchars_num = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
+	wchar_t* wstr = new wchar_t[wchars_num];
+	MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, wstr, wchars_num);
+	return wstr;
 }
