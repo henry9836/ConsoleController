@@ -18,3 +18,5 @@ Simple console controller for easier development
 - Outputing colored text
 
 - Output log info with three levels (INFO, WARN, FATAL)
+
+- C++17 Support
