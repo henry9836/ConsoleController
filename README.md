@@ -19,4 +19,6 @@ Simple console controller for easier development
 
 - Output log info with three levels (INFO, WARN, FATAL)
 
+- Upgrades project to support unicode
+
 - C++17 Support
