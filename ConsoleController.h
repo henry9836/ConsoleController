@@ -26,6 +26,8 @@ Verison 4.1
 #include <codecvt>
 #include <string>
 
+using namespace std;
+
 /*
 
 COLOR CODES:
