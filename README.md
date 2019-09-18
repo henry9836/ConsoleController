@@ -22,3 +22,5 @@ Simple console controller for easier development
 - Upgrades project to support unicode
 
 - C++17 Support
+
+- Convert strings to wstring easily
