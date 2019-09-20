@@ -24,3 +24,11 @@ Simple console controller for easier development
 - C++17 Support
 
 - Convert strings to wstring easily
+
+#### Intergation
+
+- Import ConsoleController.h into your project
+
+- Include the header file with #include "ConsoleController.h"
+
+- Initalise the Controller with Console_Initalize();
